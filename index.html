@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>shellpanion - Your AI-Powered Shell</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .container {
+            width: 66.66%; /* Central 2/3rd of the screen */
+            min-height: 0; /* Override flex container min-height */
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            margin: auto; /* Center the container on the screen */
+        }
+
+        .typing-animation {
+            overflow: hidden;
+            white-space: normal;
+            word-wrap: break-word;
+            margin: 0 auto;
+            letter-spacing: .15em;
+        }
+
+        .cursor {
+            border-right: .15em solid orange;
+            animation: blink-caret .75s step-end infinite;
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: orange; }
+        }
+
+        .shell {
+            background-color: #000;
+            color: #1c1c48; /* Font color updated to #1c1c48 */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+        }
+
+        .download-button {
+            display: inline-block;
+            margin-top: 20px;
+            background-color: #1c1c48; /* Button color */
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .download-button:hover {
+            background-color: darkblue; /* Adjust if needed */
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            font-size: 14px;
+            background-color: #f2f2f2;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="typing-animation" id="line1">
+            <span id="text"></span><span id="cursor" class="cursor">|</span>
+        </div>
+        <a class="download-button" href="shellpanion" download="shellpanion">Download shellpanion</a>
+    </div>
+
+    <footer>
+        &copy; 2024 WorkHub Platform Inc. All rights reserved.
+    </footer>
+
+    <script>
+        const text1 = "Hi, I am shellpanion. Your AI powered shell. ";
+        const text2 = "You can use me by typing /ai <your command> ";
+        const text3 = "Also, if you make any mistake, I will fix it for you automatically. ";
+        const text4 = "Give it a try.";
+        
+        const delay = ms => new Promise(res => setTimeout(res, ms));
+
+        async function typeText(element, text, cursor) {
+            for (let i = 0; i < text.length; i++) {
+                element.innerHTML += text[i];
+                await delay(100);
+            }
+            cursor.style.display = 'inline';
+        }
+
+        async function startTyping() {
+            const textElement = document.getElementById('text');
+            const cursorElement = document.getElementById('cursor');
+            
+            cursorElement.style.display = 'none';
+            await typeText(textElement, text1, cursorElement);
+            await typeText(textElement, text2, cursorElement);
+            await typeText(textElement, text3, cursorElement);
+            await typeText(textElement, text4, cursorElement);
+        }
+
+        startTyping();
+    </script>
+</body>
+</html>
