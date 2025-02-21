@@ -8,12 +8,10 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
-# Initialize OpenAI API key from environment variable
-api_key = os.getenv('OPENAI_API_KEY')
-if not api_key:
-    raise ValueError("OPENAI_API_KEY environment variable is not set")
-
-openai.api_key = api_key
+# Initialize OpenAI client with project API key
+client = openai.OpenAI(
+    api_key=os.getenv('OPENAI_API_KEY')
+)
 
 def parse_command(user_input):
     if user_input.startswith("/ai"):
@@ -32,13 +30,13 @@ def execute_command(command, parameters):
         print("Invalid command. Please try again.")
 
 def generate_command_from_natural_language(query):
-    response = openai.chat.completions.create(
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "You are a shell. Given user's query, generate a command to execute. For example, for a query like 'list files', return ls -l. Do not add any additional content. Just return executable commands that can be passed directly to the shell."},
             {"role": "user", "content": query}
         ]
-        )
+    )
     generated_command = response.choices[0].message.content.strip()
     return generated_command
 
